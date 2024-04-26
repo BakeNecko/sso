@@ -1,10 +1,11 @@
 package main
 
 import (
+	"github.com/BakeNecko/sso/internal/app"
+	"github.com/BakeNecko/sso/internal/config"
+	"github.com/BakeNecko/sso/internal/lib/logger/handlers/slogpretty"
 	"log/slog"
 	"os"
-	"sso/internal/config"
-	"sso/internal/lib/logger/handlers/slogpretty"
 )
 
 const (
@@ -20,8 +21,9 @@ func main() {
 
 	log.Info("starting application", slog.Any("config", cfg))
 
-	// TODO: init app
+	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
 
+	application.GRPCSrv.MustRun()
 	// TODO: start gRPC-server app
 }
 
